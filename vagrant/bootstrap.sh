@@ -2,6 +2,15 @@
 
 EXIT_CODE=0
 
+CA_CERTIFICATES_PATH=/vagrant_data
+CA_CERTIFICATES_SCRIPT_URI=https://raw.githubusercontent.com/scizeron/scripts/master/certificates/update-ca-certificates.sh
+
+PROXY_USER="XXX"
+PROXY_PASS="XXX"
+PROXY_HOST="XXX"
+PROXY_PORT="XXX"
+PROXY_PROTO="http"
+
 # ----------------------------------------------------------------------------
 # usage
 # ----------------------------------------------------------------------------
@@ -84,11 +93,16 @@ echo "- apt-get proxy configuration ok"
 echo ""
 echo "-------------------------------------------------------------------"
 echo "- certificates"
-curl --proxy ${PROXY_ENTRY} --get --output update-ca-certificates.sh https://raw.githubusercontent.com/scizeron/scripts/master/certificates/update-ca-certificates.sh
+echo " - download update-ca-certificates.sh from $CA_CERTIFICATES_SCRIPT_URI"
+curl --proxy ${PROXY_ENTRY} --get --output update-ca-certificates.sh $CA_CERTIFICATES_SCRIPT_URI
 chmod u+x update-ca-certificates.sh
+echo " - update-ca-certificates.sh is downloaded"
+echo " - install dos2unix"
 apt-get -y install dos2unix
+echo " - dos2unix update-ca-certificates.sh"
 dos2unix update-ca-certificates.sh
-./update-ca-certificates.sh /vagrant_data
+echo " - add/update ca-certificates in $CA_CERTIFICATES_PATH"
+./update-ca-certificates.sh $CA_CERTIFICATES_PATH
 EXIT_CODE=$?
 
 if [ $EXIT_CODE != 0 ]; then
