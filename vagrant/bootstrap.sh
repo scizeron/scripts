@@ -116,7 +116,7 @@ if [ -f /etc/default/docker ]; then
  echo ""
  echo "-------------------------------------------------------------------"
  echo "- docker proxy configuration"
- echo "export http_proxy=\"http://${PROXY_USER}:${PROXY_PASS}@${PROXY_HOST}:${PROXY_PORT}\"" >> /etc/default/docker
+ echo "export http_proxy=\"${PROXY_ENTRY}\"" >> /etc/default/docker
  service docker restart
  EXIT_CODE=$?
 
