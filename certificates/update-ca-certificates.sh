@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------
 usage() {
  echo "Usage:  $0 dir"
- echo " dir containing the certificates to update"
+ echo " dir containing the certificates to add/update"
 }
 
 # ----------------------------------------------------------------------------
