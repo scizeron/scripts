@@ -82,6 +82,35 @@ if [ $PROXY_PORT != "XXX" ]; then
 fi
 
 echo "-------------------------------------------------------------------"
+echo "- wget proxy configuration"
+touch /home/vagrant/.wgetrc
+echo "http_proxy = $PROXY_ENTRY" >  /home/vagrant/.wgetrc
+echo "https_proxy = $PROXY_ENTRY" >>  /home/vagrant/.wgetrc
+echo "use_proxy = on" >> /home/vagrant/.wgetrc
+echo "wait = 15" >> /home/vagrant/.wgetrc
+echo "- wget proxy configuration ok"
+
+echo "-------------------------------------------------------------------"
+echo "- curl proxy configuration"
+touch /home/vagrant/.curlrc
+echo "proxy=$PROXY_ENTRY" > /home/vagrant/.curlrc
+echo "- curl proxy configuration ok"
+
+echo ""
+echo "-------------------------------------------------------------------"
+echo "- env proxy configuration"
+touch /home/vagrant/.bashrc
+echo "# added by bootstrap.sh" >> /home/vagrant/.bashrc
+echo "export http_proxy=$PROXY_ENTRY" >> /home/vagrant/.bashrc
+echo "export https_proxy=$PROXY_ENTRY" >> /home/vagrant/.bashrc
+echo "export HTTP_PROXY=$PROXY_ENTRY" >> /home/vagrant/.bashrc
+echo "export HTTPS_PROXY=$PROXY_ENTRY" >> /home/vagrant/.bashrc
+echo "export NO_PROXY=192.*" >> /home/vagrant/.bashrc
+echo "export no_proxy=192.*" >> /home/vagrant/.bashrc
+echo "- env proxy configuration ok"
+
+echo ""
+echo "-------------------------------------------------------------------"
 echo "- apt-get proxy configuration"
 APT_PROXY_FILE="/etc/apt/apt.conf.d/01proxy"
 touch $APT_PROXY_FILE
