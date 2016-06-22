@@ -21,17 +21,25 @@ SRC_CA_FOLDER=$1
 EXPECTED_EXTENSION=.crt
 DEST_DIR=/usr/local/share/ca-certificates
 
-for CA_FILE in ${SRC_CA_FOLDER}/
+echo "-----------------------------------------------------------------------------"
+echo " - Files in ${SRC_CA_FOLDER}"
+echo "-----------------------------------------------------------------------------"
+
+for CA_FILE in ${SRC_CA_FOLDER}/*.*
 do
- case "$CA_FILE" in
+ FILENAME=`basename $CA_FILE` 
+ FILE_NO_EXT=`echo $FILENAME | awk -F "." '{print $(NF-1)}'`
+ EXT=`echo $FILENAME | awk -F "." '{print $NF}'`
+ echo " - ${FILENAME}" 
+ case "$FILENAME" in
   *.cer)
-    OUT_FILE=${DEST_DIR}/${CA_FILE}${EXPECTED_EXTENSION}
+    OUT_FILE=${DEST_DIR}/${FILE_NO_EXT}${EXPECTED_EXTENSION}
     openssl x509 -in $CA_FILE -inform der -outform pem -out ${OUT_FILE}
-    echo "${CA_FILE} has been transformed and copied"
+    echo " - Transformed in pem format (${EXPECTED_EXTENSION}) and copied in ${DEST_DIR}"
     ;;
-  *.pem)
-    cp ${CA_FILE} ${DEST_DIR}/${CA_FILE}
-    echo "${CA_FILE} has been copied"
+  *.crt)
+    cp ${CA_FILE} ${DEST_DIR}/${FILENAME}
+    echo " - Copied in ${DEST_DIR}"
     ;;
  esac
 done
