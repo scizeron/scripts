@@ -100,6 +100,7 @@ echo ""
 echo "-------------------------------------------------------------------"
 echo "- env proxy configuration"
 touch /home/vagrant/.bashrc
+echo ""
 echo "# added by bootstrap.sh" >> /home/vagrant/.bashrc
 echo "export http_proxy=$PROXY_ENTRY" >> /home/vagrant/.bashrc
 echo "export https_proxy=$PROXY_ENTRY" >> /home/vagrant/.bashrc
