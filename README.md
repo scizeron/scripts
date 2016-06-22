@@ -4,7 +4,7 @@
 - As a developer, I need a to have docker on my local laptop
 - But my laptop is running on Windows 7
 - And I am behind a massive corporate proxy
-- Last not least, boot2docker, have a docker host vm different from boot2docker 
+- Last not least, have a docker host vm different from boot2docker could be great
 
 ## Vagrant
 - use a vagrant to have a box with a running docker engine
