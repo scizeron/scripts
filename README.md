@@ -33,8 +33,8 @@ docker-machine --debug create -d generic \
 --generic-ssh-user vagrant \
 --generic-ssh-key private_key \
 --generic-ip-address 192.168.33.10 \
---engine-env HTTP_PROXY=http://... \
---engine-env HTTPS_PROXY=http://... \
+--engine-env HTTP_PROXY=$HTTP_PROXY \
+--engine-env HTTPS_PROXY=$HTTPS_PROXY \
 dockervm
 ```
 
