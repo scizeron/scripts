@@ -33,14 +33,11 @@ docker-machine --debug create -d generic \
 --generic-ssh-user vagrant \
 --generic-ssh-key private_key \
 --generic-ip-address 192.168.33.10 \
+--engine-env HTTP_PROXY=http://... \
+--engine-env HTTPS_PROXY=http://... \
 dockervm
 ```
 
-- Then, regenerate the certs : 
-```
-docker-machine regenerate-certs dockervm
-```
-- /etc/default/docker has been updated, the proxy configuration has been removed
+- If no proxy concerns, no need to provide --engine-env HTTP_PROXY=... and --engine-env HTTPS_PROXY=...
 
-- vagrant reload --provision 
 
