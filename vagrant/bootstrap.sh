@@ -19,6 +19,29 @@ usage() {
 }
 
 # ----------------------------------------------------------------------------
+# commandExists
+# ----------------------------------------------------------------------------
+commandExists() {
+ command -v "$@" > /dev/null 2>&1
+}
+
+# ----------------------------------------------------------------------------
+# installPackage
+# ----------------------------------------------------------------------------
+installPackage() {
+ PACKAGE=$1
+ if commandExists $PACKAGE; then
+  echo "$PACKAGE is already installed"
+ else
+  if commandExists apt-get; then
+   apt-get -y install $PACKAGE
+  else
+   yum -y install $PACKAGE
+  fi
+ fi
+}
+
+# ----------------------------------------------------------------------------
 # main
 # ----------------------------------------------------------------------------
 
@@ -110,15 +133,33 @@ echo "export NO_PROXY=192.*" >> /home/vagrant/.bashrc
 echo "export no_proxy=192.*" >> /home/vagrant/.bashrc
 echo "- env proxy configuration ok"
 
-echo ""
-echo "-------------------------------------------------------------------"
-echo "- apt-get proxy configuration"
-APT_PROXY_FILE="/etc/apt/apt.conf.d/01proxy"
-touch $APT_PROXY_FILE
+echo "export PS1=\"\[\033[01;32m\]\u@$(ip addr show eth1 | grep -o 'inet [0-9]\+.[0-9]\+.[0-9]\+.[0-9]\+' | cut -d' ' -f2)\[\033[01;34m\] \w $\[\033[00m\]\"" >> /home/vagrant/.bashrc
 
-echo "Acquire::http::Proxy \"${PROXY_ENTRY}\";" > $APT_PROXY_FILE
-echo "Acquire::https::Proxy \"${PROXY_ENTRY}\";" >> $APT_PROXY_FILE
-echo "- apt-get proxy configuration ok"
+export PS1="\[\]\u@${IP}\[\] \w $\[\]"
+
+echo "- prompt update ok"
+
+if  [ -d /etc/apt/apt.conf.d ]; then
+ echo ""
+ echo "-------------------------------------------------------------------"
+ echo "- apt-get proxy configuration"
+ APT_PROXY_FILE="/etc/apt/apt.conf.d/01proxy"
+ touch $APT_PROXY_FILE
+
+ echo "Acquire::http::Proxy \"${PROXY_ENTRY}\";" > $APT_PROXY_FILE
+ echo "Acquire::https::Proxy \"${PROXY_ENTRY}\";" >> $APT_PROXY_FILE
+ echo "- apt-get proxy configuration ok"
+
+elif  [ -f /etc/yum.conf ]; then
+ echo ""
+ echo "-------------------------------------------------------------------"
+ echo "- yum proxy configuration"
+ echo "proxy=${PROXY_ENTRY}" >> /etc/yum.conf
+ echo "- yum proxy configuration ok"
+fi
+
+installPackage dos2unix
+installPackage net-tools
 
 echo ""
 echo "-------------------------------------------------------------------"
@@ -127,9 +168,6 @@ echo " - download update-ca-certificates.sh from $CA_CERTIFICATES_SCRIPT_URI"
 curl --proxy ${PROXY_ENTRY} --get --output update-ca-certificates.sh $CA_CERTIFICATES_SCRIPT_URI
 chmod u+x update-ca-certificates.sh
 echo " - update-ca-certificates.sh is downloaded"
-echo " - install dos2unix"
-apt-get -y install dos2unix
-echo " - dos2unix update-ca-certificates.sh"
 dos2unix update-ca-certificates.sh
 echo " - add/update ca-certificates in $CA_CERTIFICATES_PATH"
 ./update-ca-certificates.sh $CA_CERTIFICATES_PATH
