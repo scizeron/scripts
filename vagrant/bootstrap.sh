@@ -133,6 +133,17 @@ echo "export NO_PROXY=192.*" >> /home/vagrant/.bashrc
 echo "export no_proxy=192.*" >> /home/vagrant/.bashrc
 echo "- env proxy configuration ok"
 
+touch /home/vagrant/.bash_aliases
+echo "" > /home/vagrant/.bash_aliases
+echo "alias l='ls -lrt'" >> /home/vagrant/.bash_aliases
+echo "alias c='clear'" >> /home/vagrant/.bash_aliases
+echo "alias dps='docker ps'" >> /home/vagrant/.bash_aliases
+echo "alias ds='docker service ls'" >> /home/vagrant/.bash_aliases
+echo "alias dn='docker node ls'" >> /home/vagrant/.bash_aliases
+echo "alias dsps='docker service ps'" >> /home/vagrant/.bash_aliases
+echo "alias dl='docker logs -f'" >> /home/vagrant/.bash_aliases
+echo "alias dll='dl $(docker ps -lq)'" >> /home/vagrant/.bash_aliases
+
 echo "export PS1=\"\[\033[01;32m\]\u@$(ip addr show eth1 | grep -o 'inet [0-9]\+.[0-9]\+.[0-9]\+.[0-9]\+' | cut -d' ' -f2)\[\033[01;34m\] \w $\[\033[00m\]\"" >> /home/vagrant/.bashrc
 
 export PS1="\[\]\u@${IP}\[\] \w $\[\]"
