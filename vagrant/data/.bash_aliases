@@ -1,6 +1,6 @@
 alias l='ls -lrt'
-alias dps='docker ps'
 alias c='clear'
+alias dps='docker ps'
 alias dps='docker ps'
 alias ds='docker service ls'
 alias dn='docker node ls'
